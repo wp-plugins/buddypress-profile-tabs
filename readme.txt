@@ -4,18 +4,18 @@ Donate link: http://jacobschweitzer.com/
 Tags: BuddyPress, jQuery, jQueryUI, Profile, Tabs
 Requires at least: 3.4.2
 Tested up to: 3.5
-Stable tag: 1.1
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-BuddyPress Profile Tabs is a plugin that uses the Profile Groups provided in the BuddyPress options to make nice looking tabs using the jQuery UI.
+BuddyPress Profile Tabs is a plugin that uses the Profile Groups provided in the BuddyPress options to make nice looking tabs using the jQuery UI. 
 
 
 == Description ==
 
 There is an admin section Options -> BP Profile Tabs where you can change the jQuery UI Theme, the default is cupertino.
 
-Any of the themes available at http://jqueryui.com/themeroller/ can be used for the tabs, it loads the latest Google hosted jQuery UI theme.
+Any of the themes available at http://jqueryui.com/themeroller/ can be used for the tabs, it loads either Google or Microsoft hosted jQuery UI theme CSS.
 
 
 == Installation ==
@@ -39,6 +39,10 @@ You can change the theme BuddyPress Profile Tabs is using in the options section
 2. 
 
 == Changelog ==
+
+= 1.3 =
+Allows either Google or Microsoft hosted jQuery UI CSS
+Changed how the menu names are loading, using PHP instead of several small Javascript insertions
 
 = 1.1 =
 * A bit of code cleanup to make it easier to read for developers.
