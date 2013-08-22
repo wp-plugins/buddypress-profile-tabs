@@ -3,7 +3,7 @@
 Plugin Name: BuddyPress Profile Tabs
 Plugin URI: http://jacobschweitzer.com/
 Description: Makes the profile groups BuddyPress provides into tabs to better organize and consolidate the profile page. 
-Version: 1.3
+Version: 1.4
 Author: Jacob Schweitzer
 Author URI: http://jacobschweitzer.com/
 License: GPL2
@@ -62,6 +62,7 @@ if ( $bpt_options == '' ) {
 	?>
 	<h2>BuddyPress Profile Tabs Admin</h2>
 	<form id="bp_profile_tabs_theme_form" class="bp_profile_tabs_theme_form_class">
+		<h3>Theme</h3>
 		<select name="bpt_theme" id="bpt_theme">
 			<option value="base">Base</option>
 			<option value="black-tie">Black Tie</option>
@@ -89,10 +90,12 @@ if ( $bpt_options == '' ) {
 			<option value="ui-lightness">Ui lightness</option>
 			<option value="vader">Vader</option>
 		</select>
+		<h3>Load Theme From</h3>
 		<select name="bpt_cdn" id="bpt_cdn">
 			<option value="google">Google</option>
 			<option value="microsoft">Microsoft</option>
 		</select>
+		<br/><br/>
 		<input type="hidden" name="action" id="action" value="bp_profile_tabs_ajax_save" />
 		<input type="submit" value="Submit" id="submit" />
 	</form>
@@ -106,6 +109,7 @@ if ( $bpt_options == '' ) {
 
 			$("form#bp_profile_tabs_theme_form input#submit").click(function(){
 				var data = $("form#bp_profile_tabs_theme_form").serialize();
+				
 				$.post(ajaxurl, data, function(response) {
 					$("div#bp_profile_tabs_change_result span").replaceWith("<span>"+response+"</span>");
 					$("div#bp_profile_tabs_change_result span").contents().fadeOut(3000);
@@ -129,7 +133,7 @@ function bp_profile_tabs_top() {
 	echo '<div id="tabs"><ul>';
 
 	global $wpdb;
-	$profile_field_groups_query = 'SELECT name FROM `'.$wpdb->prefix.'bp_xprofile_groups`;';   
+	$profile_field_groups_query = 'SELECT name FROM `'.$wpdb->prefix.'bp_xprofile_groups` order by group_order';
 	$groups_list = $wpdb->get_col($profile_field_groups_query);
 	$looper = 1;
 	foreach ( $groups_list as $one_group_name ) {
@@ -151,9 +155,9 @@ add_action('bp_before_profile_loop_content','bp_profile_tabs_top');
 //add_filter('bp_get_profile_group_name','alter_group_names',5,1);
 
 function bp_profile_tabs_div() {
-global $looper;
-$looper++;
-echo '<div id="tabs-'.$looper.'">';
+	global $looper;
+	$looper++;
+	echo '<div id="tabs-'.$looper.'">';
 }
 add_action('bp_before_profile_field_content','bp_profile_tabs_div');
 
@@ -165,47 +169,45 @@ function bp_profile_tabs_end() { echo "</div>"; }
 add_action('bp_after_profile_loop_content','bp_profile_tabs_end');
 
 
-function bp_profile_tabs() {
-	
-echo '
-<script type="text/javascript">
-jQuery(document).ready( function($) { 
-	$( "div.profile > div#tabs" ).tabs();
-}); 
-</script>';
-	
+function bp_profile_tabs() {	
+	echo '
+	<script type="text/javascript">
+	jQuery(document).ready( function($) { 
+		$( "div.profile > div#tabs" ).tabs();
+	}); 
+	</script>';
 }
 add_action('bp_before_profile_loop_content','bp_profile_tabs');
 
 add_action('bp_before_profile_loop_content','bpt_load');
 function bpt_load() {
-$bpt_options = get_option("bp_profile_tabs_option");
-if ( $bpt_options == '' ) {
-	$jquery_theme_option = get_option("bp_profile_tabs_theme_option");
-	if ( $jquery_theme_option != '' ) {
-		$bpt_options['bpt_theme'] = $jquery_theme_option;
-		$bpt_options['bpt_cdn'] = 'google';
-		update_option("bp_profile_tabs_option",$bpt_options);
-		delete_option("bp_profile_tabs_theme_option");
+	$bpt_options = get_option("bp_profile_tabs_option");
+	if ( $bpt_options == '' ) {
+		$jquery_theme_option = get_option("bp_profile_tabs_theme_option");
+		if ( $jquery_theme_option != '' ) {
+			$bpt_options['bpt_theme'] = $jquery_theme_option;
+			$bpt_options['bpt_cdn'] = 'google';
+			update_option("bp_profile_tabs_option",$bpt_options);
+			delete_option("bp_profile_tabs_theme_option");
+		}
+		if ( $jquery_theme_option == '' ) {
+			$bpt_options['bpt_theme'] = 'cupertino';
+			$bpt_options['bpt_cdn'] = 'google';
+			update_option("bp_profile_tabs_option",$bpt_options);
+		}
 	}
-	if ( $jquery_theme_option == '' ) {
-		$bpt_options['bpt_theme'] = 'cupertino';
-		$bpt_options['bpt_cdn'] = 'google';
-		update_option("bp_profile_tabs_option",$bpt_options);
+
+	echo '<link rel="stylesheet" href="';
+	if ( $bpt_options['bpt_cdn'] == 'google' ) {
+			echo 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/'.$bpt_options['bpt_theme'].'/jquery-ui.css" />';
 	}
-}
+	if ( $bpt_options['bpt_cdn'] == 'microsoft' ) {
+		echo 'http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.2/themes/'.$bpt_options['bpt_theme'].'/jquery-ui.css" />';
+	}
 
-echo '<link rel="stylesheet" href="';
-if ( $bpt_options['bpt_cdn'] == 'google' ) { 
-	echo 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/'.$bpt_options['bpt_theme'].'/jquery-ui.css" />';
-}
-if ( $bpt_options['bpt_cdn'] == 'microsoft' ) {
-	echo 'http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/'.$bpt_options['bpt_theme'].'/jquery-ui.css" />';
-}
-
-wp_enqueue_script( 'jquery' );
-wp_enqueue_script( 'jquery-ui-core' );
-wp_enqueue_script( 'jquery-ui-tabs' );
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-core' );
+	wp_enqueue_script( 'jquery-ui-tabs' );
 }
 
 
@@ -221,4 +223,3 @@ function bpt_get_version() {
 	$plugin_file = basename( ( __FILE__ ) );
 	return $plugin_folder[$plugin_file]['Version'];
 }
-?>
