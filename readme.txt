@@ -3,8 +3,8 @@ Contributors: primetimejas
 Donate link: http://jacobschweitzer.com/
 Tags: BuddyPress, jQuery, jQueryUI, Profile, Tabs
 Requires at least: 3.4.2
-Tested up to: 3.5
-Stable tag: 1.4
+Tested up to: 3.6
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,11 @@ You can change the theme BuddyPress Profile Tabs is using in the options section
 3. BuddyPress User Profile Fields Options
 
 == Changelog ==
+= 1.4 = 
+New jQuery UI CSS
+Fixed tab order issue 
+Verified to work with BuddyPress 1.8
+Verified to work with WordPress 3.6
 
 = 1.3 =
 Allows either Google or Microsoft hosted jQuery UI CSS
