@@ -3,7 +3,7 @@
 Plugin Name: BuddyPress Profile Tabs
 Plugin URI: http://jacobschweitzer.com/
 Description: Makes the profile groups BuddyPress provides into tabs to better organize and consolidate the profile page. 
-Version: 1.4
+Version: 1.4.2
 Author: Jacob Schweitzer
 Author URI: http://jacobschweitzer.com/
 License: GPL2
