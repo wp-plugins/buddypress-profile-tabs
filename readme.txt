@@ -35,8 +35,9 @@ You can change the theme BuddyPress Profile Tabs is using in the options section
 
 == Screenshots ==
 
-1. 
-2. 
+1. Profile Page Using BuddyPress Profile Tabs and the Redmond theme
+2. BuddyPress Profile Tabs Options Page
+3. BuddyPress User Profile Fields Options
 
 == Changelog ==
 
