@@ -33,12 +33,12 @@ function register_string( $plugin_name_human_format, $string_name, $value ) {
 	if ( function_exists( 'icl_register_string' ) ) {
 		icl_register_string( $plugin_name_human_format, $string_name, $value );
 	} elseif ( has_filter( 'cml_my_translations' ) ) {
-		add_filter( 'cml_my_translations', function($groups) {
+		add_filter( 'cml_my_translations', create_function( "$groups, $plugin_name_human_format","
 			$plugin_name_human_format_replaced = str_replace( ' ', '-', $plugin_name_human_format );
 			CMLTranslations:add( $string_name, $value, $plugin_name_human_format );
-			$groups[ $plugin_name_human_format_replaced ] = $plugin_name_human_format;
-			return $groups;
-		} );
+			$groups[$plugin_name_human_format_replaced] = $plugin_name_human_format;
+			return $groups;"
+		 ) );
 	} elseif ( function_exists( 'pll_register_string' ) ) {
 		$plugin_name_human_format_replaced = str_replace( ' ', '-', $plugin_name_human_format );
 		pll_register_string( $plugin_name_human_format_replaced, $string_name );
