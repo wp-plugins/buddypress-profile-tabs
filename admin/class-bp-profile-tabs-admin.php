@@ -55,11 +55,9 @@ class BP_Profile_Tabs_Admin {
 		 *  Custom Metabox and Fields for Wordpress
 		 * 	https://github.com/WebDevStudios/Custom-Metaboxes-and-Fields-for-WordPress
 		 */
-		add_action( 'init', function() {
-			if ( !class_exists( 'cmb_Meta_Box' ) ) {
-				require_once( plugin_dir_path( __FILE__ ) . 'includes/CMBF/init.php' );
-			}
-		}, 9999 );
+		if ( !class_exists( 'cmb_Meta_Box' ) ) {
+			add_action( 'init', array( $this, 'add_cmb_Meta_Box_class'), 9999 );
+		}
 
 
 		//Add the export settings method
@@ -187,5 +185,9 @@ class BP_Profile_Tabs_Admin {
 		wp_safe_redirect( admin_url( 'options-general.php?page=' . $this->plugin_slug ) );
 		exit;
 	}
+	public function add_cmb_Meta_Box_class() {
+		require_once( plugin_dir_path( __FILE__ ) . 'includes/CMBF/init.php' );
+	}
+	
 
 }
