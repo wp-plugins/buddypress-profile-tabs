@@ -40,6 +40,7 @@ You can change the theme BuddyPress Profile Tabs is using in the options section
 3. BuddyPress User Profile Fields Options
 
 == Changelog ==
+
 = 1.5.4 =
 * Using the same version of the jQuery UI theme as the jQuery UI installed in the current version of WordPress on the server. 
 * Added example tabs in the admin section. 
