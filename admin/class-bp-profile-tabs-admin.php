@@ -43,6 +43,7 @@ class BP_Profile_Tabs_Admin {
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->plugin_name = $plugin->get_plugin_name();
 		$this->version = $plugin->get_plugin_version();
+		$this->jquery_ui_version = $plugin->get_jquery_ui_version();
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
@@ -64,6 +65,9 @@ class BP_Profile_Tabs_Admin {
 		add_action( 'admin_init', array( $this, 'settings_export' ) );
 		//Add the import settings method
 		add_action( 'admin_init', array( $this, 'settings_import' ) );
+
+		add_action( 'admin_init', array( $this, 'admin_register_bpt_script' ) );
+		add_action( 'admin_head', array( $this, 'load_admin_scripts' ) );
 
 	}
 
@@ -187,6 +191,36 @@ class BP_Profile_Tabs_Admin {
 	}
 	public function add_cmb_Meta_Box_class() {
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/CMBF/init.php' );
+	}
+	public function load_admin_scripts(){
+		if ( $_GET['page'] === 'bp-profile-tabs' ) {
+			wp_enqueue_style( $this->plugin_slug . '-jquery-ui-style' );
+			wp_enqueue_script( $this->plugin_slug . '-script' );
+		}
+	}
+	public function admin_register_bpt_script() {
+		wp_register_script( $this->plugin_slug . '-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), $this->version );
+		$bpt_theme = isset( $_POST['bpt_theme'] ) ? $_POST['bpt_theme'] : '';
+		$bpt_options = get_option("bp_profile_tabs_option");
+		if ( empty( $bpt_theme ) ) {
+			$bpt_theme = $bpt_options["bpt_theme"];
+		}
+
+		$protocol = is_ssl() ? 'https' : 'http';
+		$jquery_ui_version = $this->jquery_ui_version;
+		if ( $bpt_options['bpt_cdn'] == 'google' ) {
+				$jquery_ui_css_url = $protocol . '://ajax.googleapis.com/ajax/libs/jqueryui/'.$jquery_ui_version.'/themes/'.$bpt_theme.'/jquery-ui.css';
+									//http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css
+		}
+		if ( $bpt_options['bpt_cdn'] == 'microsoft' ) {
+			$jquery_ui_css_url = $protocol . '://ajax.aspnetcdn.com/ajax/jquery.ui/'.$jquery_ui_version.'/themes/'.$bpt_theme.'/jquery-ui.css';
+										//http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/themes/blitzer/jquery-ui.css
+										//http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.3/jquery-ui.min.js
+		}
+		if ( $bpt_options['bpt_cdn'] == 'jquery' ) {
+			$jquery_ui_css_url = $protocol . '://code.jquery.com/ui/'.$jquery_ui_version.'/themes/'.$bpt_theme.'/jquery-ui.css';
+		}
+		wp_register_style( $this->plugin_slug . '-jquery-ui-style', $jquery_ui_css_url, array(), $this->version );
 	}
 	
 

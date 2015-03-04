@@ -6,7 +6,6 @@
  * @link      http://ijas.me
  * @copyright 2014 Jacob Schweitzer
  */
-
 ?>
 
 
@@ -76,7 +75,33 @@
 			?>
 
 		
-		
+	<br/><br/>
+	
+	<h2><?php _e( 'Example Tabs', $this->plugin_slug ) ?></h2>
+
+	<div id="tabs">
+		<ul>
+			<li>
+				<a href="#tabs-1"><?php _e( 'Tab 1', $this->plugin_slug ) ?></a>
+			</li>
+			<li>
+				<a href="#tabs-2"><?php _e( 'Tab 2', $this->plugin_slug ) ?></a>
+			</li>
+		</ul>
+
+		<div id="tabs-1" >
+			<div class="bp-widget base">
+				<h3><?php _e( 'Tab 1', $this->plugin_slug ) ?></h3>
+				<?php _e( 'Example data...', $this->plugin_slug ) ?>
+			</div>
+		</div>
+		<div id="tabs-2" >
+			<div class="bp-widget base">
+				<h4><?php _e( 'Tab 2', $this->plugin_slug ) ?></h4>
+				<?php _e( 'More example data...', $this->plugin_slug ) ?>
+			</div>
+		</div>
+	</div>	
 		
 		
 		<br/><br/>

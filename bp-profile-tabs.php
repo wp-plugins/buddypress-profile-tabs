@@ -31,11 +31,6 @@ if ( !defined( 'WPINC' ) ) {
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-bp-profile-tabs.php' );
 
 /*
- * Load Language wrapper function for WPML/Ceceppa Multilingua/Polylang
- */
-require_once( plugin_dir_path( __FILE__ ) . 'includes/language.php' );
-
-/*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  *
