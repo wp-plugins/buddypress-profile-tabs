@@ -4,7 +4,7 @@ Donate link: http://jacobschweitzer.com/
 Tags: BuddyPress, jQuery, jQueryUI, Profile, Tabs
 Requires at least: 3.4.2
 Tested up to: 4.1.1
-Stable tag: 1.5.6
+Stable tag: 1.5.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,7 +40,7 @@ You can change the theme BuddyPress Profile Tabs is using in the options section
 3. BuddyPress User Profile Fields Options
 
 == Changelog ==
-= 1.5.6 =
+= 1.5.7 =
 * Updated tab ids to match the group ids that are in the database.
 
 = 1.5.5 =
