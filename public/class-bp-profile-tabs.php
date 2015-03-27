@@ -67,6 +67,10 @@ class BP_Profile_Tabs {
 
 		
 		add_action( 'wp_enqueue_scripts', array($this, 'register_bpt_script' ) );
+
+		global $wpdb;
+		$profile_field_groups_query = 'SELECT id, name FROM `'.$wpdb->prefix.'bp_xprofile_groups` order by group_order';
+		$this->groups_list = $wpdb->get_results($profile_field_groups_query);
 	}
 
 	/**
@@ -290,15 +294,10 @@ class BP_Profile_Tabs {
 	 */
 	public function bp_profile_tabs_top() {
 		echo '<div id="tabs"><ul>';
-		global $wpdb;
-		$profile_field_groups_query = 'SELECT name FROM `'.$wpdb->prefix.'bp_xprofile_groups` order by group_order';
-		$groups_list = $wpdb->get_col($profile_field_groups_query);
-		$looper = 1;
-		foreach ( $groups_list as $one_group_name ) {
-			echo '<li><a href="#tabs-'.$looper.'">';
-			echo $one_group_name;
+		foreach ( $this->groups_list as $group ) {
+			echo '<li><a href="#tabs-'.$group->id.'">';
+			echo $group->name;
 			echo '</a></li>';
-			$looper++;
 		}
 		echo '</ul>';
 	}
@@ -309,8 +308,8 @@ class BP_Profile_Tabs {
 	 */
 	public function bp_profile_tabs_start_div() {
 		if ( bp_is_user_profile() && !bp_is_user_profile_edit() ) {
-			$profile_group_slug = bp_get_the_profile_group_id();
-			echo '<div id="tabs-'.$profile_group_slug.'">';
+			$profile_group_id = bp_get_the_profile_group_id();
+			echo '<div id="tabs-'.$profile_group_id.'">';
 		}
 		
 	}
