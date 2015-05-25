@@ -356,7 +356,9 @@ class BP_Profile_Tabs {
 		if ( $bpt_options['bpt_cdn'] == 'jquery' ) {
 			$jquery_ui_css_url = $protocol . '://code.jquery.com/ui/'.$jquery_ui_version.'/themes/'.$bpt_options["bpt_theme"].'/jquery-ui.css';
 		}
-
+		if ( !empty( $bpt_options['bpt_custom'] ) ) {
+			$jquery_ui_css_url = $bpt_options['bpt_custom'];
+		}
 		wp_register_style( $this->plugin_slug . '-jquery-ui-style', $jquery_ui_css_url, array(), self::VERSION );
 	}
 

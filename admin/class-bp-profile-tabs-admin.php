@@ -67,7 +67,7 @@ class BP_Profile_Tabs_Admin {
 		add_action( 'admin_init', array( $this, 'settings_import' ) );
 
 		add_action( 'admin_init', array( $this, 'admin_register_bpt_script' ) );
-		add_action( 'admin_head', array( $this, 'load_admin_scripts' ) );
+		add_action( 'admin_print_styles', array( $this, 'load_admin_scripts' ) );
 
 	}
 
@@ -193,10 +193,23 @@ class BP_Profile_Tabs_Admin {
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/CMBF/init.php' );
 	}
 	public function load_admin_scripts(){
-		if ( $_GET['page'] === 'bp-profile-tabs' ) {
-			wp_enqueue_style( $this->plugin_slug . '-jquery-ui-style' );
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'bp-profile-tabs' ) {
+			if ( isset( $_POST['bpt_custom'] ) ) {
+				wp_deregister_style( $this->plugin_slug . '-jquery-ui-style' );
+				wp_dequeue_style( $this->plugin_slug . '-jquery-ui-style' );
+				//$bpt_options = get_option("bp_profile_tabs_option");
+				$jquery_ui_css_url = $_POST['bpt_custom'];
+				//wp_register_style( $this->plugin_slug . '-jquery-ui-style', $jquery_ui_css_url, array(), $this->version );
+				//wp_enqueue_style( $this->plugin_slug . '-jquery-ui-style' );
+				//echo $jquery_ui_css_url;
+				wp_enqueue_style( $this->plugin_slug . '-jquery-ui-style', $jquery_ui_css_url, array(), $this->version );
+			}
+			else {
+				wp_enqueue_style( $this->plugin_slug . '-jquery-ui-style' );
+			}
 			wp_enqueue_script( $this->plugin_slug . '-script' );
 		}
+
 	}
 	public function admin_register_bpt_script() {
 		wp_register_script( $this->plugin_slug . '-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), $this->version );
@@ -219,6 +232,9 @@ class BP_Profile_Tabs_Admin {
 		}
 		if ( $bpt_options['bpt_cdn'] == 'jquery' ) {
 			$jquery_ui_css_url = $protocol . '://code.jquery.com/ui/'.$jquery_ui_version.'/themes/'.$bpt_theme.'/jquery-ui.css';
+		}
+		if ( !empty( $bpt_options['bpt_custom'] ) ) {
+			$jquery_ui_css_url = $bpt_options['bpt_custom'];
 		}
 		wp_register_style( $this->plugin_slug . '-jquery-ui-style', $jquery_ui_css_url, array(), $this->version );
 	}

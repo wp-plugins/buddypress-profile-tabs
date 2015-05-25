@@ -68,6 +68,13 @@
 					    ),
 					    'default' => 'google',
 					),
+					array(
+					    'name'    => __( 'Custom jQuery UI Theme', $this->plugin_slug ),
+					    'desc'    => __( 'Enter a URL to a custom jQuery UI theme to replace the defaults above.', $this->plugin_slug ),
+					    'id'      => $prefix . 'custom',
+					    'type'    => 'text',
+					    'default' => '',
+					),
 				),
 			);
 
